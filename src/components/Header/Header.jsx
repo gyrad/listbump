@@ -1,6 +1,5 @@
 import './Header.scss';
 import logo from '../../images/logo.svg';
-import sidebarToggle from '../../images/sidebar-toggle.svg';
 
 function Header({ sidebarIsVisible, setSidebarIsVisible }) {
   return (
