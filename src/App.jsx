@@ -10,8 +10,6 @@ function App() {
   const [sidebarIsVisible, setSidebarIsVisible] = useState(true);
   const lists = useSelector((state) => state.lists);
 
-  console.log(lists);
-
   return (
     <div className='App'>
       <Header sidebarIsVisible={sidebarIsVisible} setSidebarIsVisible={setSidebarIsVisible} />

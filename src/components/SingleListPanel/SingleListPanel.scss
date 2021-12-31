@@ -37,6 +37,15 @@
 
   &__content {
     flex: 1;
+    border-radius: 4px;
+    &[contenteditable='true'] {
+      padding: 0 0.25rem;
+      background-color: rgba(103, 136, 251, 0.2);
+      box-shadow: 0 4px 0 rgba(103, 136, 251, 0.2), 0 -4px 0 rgba(103, 136, 251, 0.2);
+      &:focus-visible {
+        outline: none;
+      }
+    }
   }
 
   &__controls {

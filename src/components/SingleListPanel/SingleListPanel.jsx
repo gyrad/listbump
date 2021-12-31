@@ -26,6 +26,7 @@ export default function SingleListPanel() {
   const [newItemContent, setNewItemContent] = useState('');
   const [percentComplete, setPercentComplete] = useState(0);
   const [currentlyEditingId, setCurrentlyEditingId] = useState(null);
+  const [currentlyEditingContent, setCurrentlyEditingContent] = useState('');
 
   useEffect(() => {
     setPercentComplete(() => {
@@ -70,8 +71,54 @@ export default function SingleListPanel() {
   }
 
   function handleEdit(id) {
-    setCurrentlyEditingId(id);
-    setIsBeingEdited(true);
+    const content = document.querySelector(`label[for='${id}'] .SingleListPanel__content`);
+    let isDiscarded = false;
+
+    if (!content.hasAttribute('contentEditable') || content.contentEditable === 'false') {
+      setCurrentlyEditingId(id);
+      content.contentEditable = 'true';
+      setCurrentlyEditingContent(content.innerText);
+      content.focus();
+      // select all the content in the element
+      document.execCommand('selectAll', false, null);
+      // collapse selection to the end
+      document.getSelection().collapseToEnd();
+
+      content.addEventListener('keydown', keydownHandler);
+      content.addEventListener('input', inputHandler);
+      content.addEventListener('blur', blurHandler);
+
+      function keydownHandler(e) {
+        if (!['Enter', 'Escape'].includes(e.key)) return;
+        if (e.key === 'Escape') isDiscarded = true;
+        content.blur();
+      }
+
+      function inputHandler(e) {
+        setCurrentlyEditingContent(e.target.innerText);
+      }
+
+      function blurHandler(e) {
+        content.contentEditable = 'false';
+
+        if (isDiscarded) {
+          const prevContent = list.find((item) => item.id === id).content;
+          content.innerText = prevContent;
+        } else {
+          setList(
+            list.map((item) => {
+              if (item.id === id) {
+                item.content = e.target.innerText;
+              }
+              return item;
+            })
+          );
+        }
+        content.removeEventListener('keydown', keydownHandler);
+        content.removeEventListener('input', inputHandler);
+        content.removeEventListener('blur', blurHandler);
+      }
+    }
   }
 
   return (
@@ -88,9 +135,7 @@ export default function SingleListPanel() {
             <li key={listItem.id}>
               <input type='checkbox' id={listItem.id} checked={listItem.isCompleted} onChange={handleCheckbox} />
               <label htmlFor={listItem.id}>
-                <div
-                  className='SingleListPanel__content'
-                  contentEditable={listItem.id === currentlyEditingId ? true : false}>
+                <div className='SingleListPanel__content' contentEditable={false} suppressContentEditableWarning={true}>
                   {listItem.content}
                 </div>
                 <div className='SingleListPanel__controls'>
