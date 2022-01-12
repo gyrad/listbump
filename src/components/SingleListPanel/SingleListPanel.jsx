@@ -139,10 +139,10 @@ export default function SingleListPanel() {
                   {listItem.content}
                 </div>
                 <div className='SingleListPanel__controls'>
-                  <button onClick={() => handleEdit(listItem.id)}>
+                  <button onClick={() => handleEdit(listItem.id)} title='Edit'>
                     <i className='fas fa-edit'></i>
                   </button>{' '}
-                  <button onClick={() => handleDelete(listItem.id)}>
+                  <button onClick={() => handleDelete(listItem.id)} title='Delete'>
                     <i className='fas fa-trash-alt'></i>
                   </button>
                 </div>
@@ -170,10 +170,10 @@ export default function SingleListPanel() {
               <label htmlFor={listItem.id}>
                 <div className='SingleListPanel__content'>{listItem.content}</div>
                 <div className='SingleListPanel__controls'>
-                  <button onClick={() => handleEdit(listItem.id)}>
+                  <button onClick={() => handleEdit(listItem.id)} title='Edit'>
                     <i className='fas fa-edit'></i>
                   </button>{' '}
-                  <button onClick={() => handleDelete(listItem.id)}>
+                  <button onClick={() => handleDelete(listItem.id)} title='Delete'>
                     <i className='fas fa-trash-alt'></i>
                   </button>
                 </div>
